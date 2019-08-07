@@ -12,7 +12,8 @@ blocks:
       jobs:
         - name: Run some code
           commands:
-            - npm i -g npm 
+            - cd ..
+            - npm i
             - npm test
             # test = jest --coverage node server
             #- node -p '"evol".split("").reverse().join("")'
