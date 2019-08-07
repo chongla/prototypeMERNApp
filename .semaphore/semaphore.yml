@@ -6,17 +6,38 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-blocks:
-  - name: Node.js example
-    task:
-      jobs:
-        - name: Run some code
-          commands:
-            - cd ../..
-            - npm i
-            - npm test
+#blocks:
+#  - name: Node.js example
+#    task:
+#      jobs:
+#        - name: Run some code
+#          commands:
+#            - cd ../..
+#            - npm i
+#            - npm test
             # test = jest --coverage node server
             #- node -p '"evol".split("").reverse().join("")'
             # Uncomment the following line to pull your code,
             # then proceed by adding your custom commands:
             #- checkout
+blocks:
+  - name: Install dependencies
+    task:
+      jobs:
+        - name: npm install and cache
+          commands:
+            - checkout
+            - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+            - npm install
+            - cache store node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json) node_modules
+
+  - name: Tests
+    task:
+      prologue:
+        commands:
+          - checkout
+          - cache restore node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum package-lock.json),node-modules-$SEMAPHORE_GIT_BRANCH,node-modules-master
+      jobs:
+        - name: Everything
+          commands:
+            - npm test
