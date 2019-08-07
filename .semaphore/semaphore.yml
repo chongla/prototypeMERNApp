@@ -12,7 +12,7 @@ blocks:
       jobs:
         - name: Run some code
           commands:
-            - cd ..
+            - cd ../..
             - npm i
             - npm test
             # test = jest --coverage node server
