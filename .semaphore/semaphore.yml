@@ -12,6 +12,7 @@ blocks:
       jobs:
         - name: Run some code
           commands:
+            - npm i
             - jest --coverage node server
             #- node -p '"evol".split("").reverse().join("")'
             # Uncomment the following line to pull your code,
